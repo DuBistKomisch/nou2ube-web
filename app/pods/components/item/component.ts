@@ -1,19 +1,21 @@
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import Component from '@glint/environment-ember-loose/glimmer-component';
 
 import ItemModel from 'nou2ube/models/item';
 import SettingsService from 'nou2ube/services/settings';
 
-interface Args {
-  autoplay: boolean;
-  item: ItemModel;
-  onEmbedEnded: () => void;
-  onEmbedToggled: () => void;
+interface Signature {
+  Args: {
+    autoplay: boolean;
+    item: ItemModel;
+    onEmbedEnded: () => void;
+    onEmbedToggled: () => void;
+  };
 }
 
-export default class ItemComponent extends Component<Args> {
+export default class ItemComponent extends Component<Signature> {
   @service declare settings: SettingsService;
 
   @tracked embed = false;
@@ -55,5 +57,11 @@ export default class ItemComponent extends Component<Args> {
       this.embed = false;
       this.args.onEmbedEnded();
     }
+  }
+}
+
+declare module '@glint/environment-ember-loose/registry' {
+  export default interface Registry {
+    Item: typeof ItemComponent;
   }
 }
